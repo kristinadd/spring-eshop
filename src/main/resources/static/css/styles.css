@@ -1,0 +1,42 @@
+body {
+  text-align: center;
+  background-color: black;
+}
+
+h1 {
+  color: white;
+}
+
+h2 {
+  color: orange;
+}
+
+h3 {
+  color: blue;
+}
+
+h4 {
+  color: violet;
+}
+
+h5 {
+  color: yellow;
+}
+
+h6 {
+  color: greenyellow;
+}
+
+.gradient-border {
+  border: 5px solid;
+  border-image: linear-gradient(45deg, purple, orange) 1;
+}
+
+div {
+  width: 60vh;
+  margin: auto;
+  border: 30px solid brown;
+  padding: 10px;
+  background-color: green;
+  background-clip: content-box;
+}
