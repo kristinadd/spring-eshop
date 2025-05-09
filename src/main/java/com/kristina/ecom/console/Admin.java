@@ -117,6 +117,14 @@ public class Admin {
     if (name != "" ) {
       product.setName(name);
     }
+
+    System.out.print("Product image:");
+    String image = sc.nextLine();
+    if (image != "" ) {
+
+      product.setImg(image);
+    }
+
     System.out.print("Product price:");
     String price = sc.nextLine();
     if (price != "" ) {

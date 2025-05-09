@@ -13,6 +13,9 @@ public class Order {
   private LocalDateTime date;
   private Computer computer;
 
+  public Order() {}
+
+
   public Order(Computer computer) {
     this( // chaining
       getID(),

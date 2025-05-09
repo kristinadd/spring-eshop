@@ -26,7 +26,7 @@ public class Product implements Cloneable {
   }
 
   public Product( int id, String name, double price, int quantity) {
-    this(id,  "Component", name, price, quantity, " ");
+    this(id,  "Component", name, price, quantity, "default.jpg");
   }
 
   public Product(int id, String type, String name, double price, int quantity, String img) {
@@ -82,8 +82,8 @@ public class Product implements Cloneable {
     return this.img;
   }
 
-  public String setImg(String image) {
-    return this.img;
+  public void setImg(String image) {
+    this.img = image;
   }
 
   @Override
