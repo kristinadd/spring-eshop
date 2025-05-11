@@ -21,10 +21,8 @@ public class ProductService {
     try {
       products = dao.readAll()
       .stream()
-      .filter(product -> product.getType()
-      .equals("Component"))
+      .filter(product -> product.getType() != null && product.getType().equals("Component"))
       .collect(Collectors.toList());
-
 
     } catch (DAOException ex) {
       ex.printStackTrace();
@@ -38,8 +36,7 @@ public class ProductService {
     Product product = null;
     try {
       product = dao.readAll().stream()
-            .filter(p -> p.getType()
-            .equals("Compute"))
+            .filter(p -> p.getType() != null && p.getType().equals("Compute"))
             .findFirst().orElse(null);
     } catch (DAOException ex) {
         ex.printStackTrace();
