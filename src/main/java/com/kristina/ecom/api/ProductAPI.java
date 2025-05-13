@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@RestController // annotation indicates that this class is a RESTful controller that handles HTTP requests and returns data directly in the HTTP response.
-@RequestMapping("ecom/product") // annotation sets the base path for all the endpoints in this controller
+@RestController
+@RequestMapping("ecom/product")
 public class ProductAPI {
-  private ProductService service = new ProductService();
+  private ProductService service;
 
-  public ProductAPI() {
-    service = new ProductService();
+  public ProductAPI(ProductService service) {
+    this.service = service;
   }
 
 
@@ -39,7 +39,7 @@ public class ProductAPI {
     return service.create(product);
   }
 
-  @DeleteMapping(value="/delete/{id}")  // don't need to produce json at all
+  @DeleteMapping(value="/delete/{id}")
   public int delete(@PathVariable int id) {
     return service.delete(id);
   }
