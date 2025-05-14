@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("ecom/product")
@@ -29,8 +31,12 @@ public class ProductAPI {
   }
 
   @GetMapping(value="/get/{id}", produces="application/json")
-  public Product get(@PathVariable int id) {
-    return service.get(id);
+  public ResponseEntity<Product> get(@PathVariable int id) {
+    Product product = service.get(id);
+    if (product == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    return ResponseEntity.ok(product);
   }
 
 
