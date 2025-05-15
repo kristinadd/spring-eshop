@@ -31,39 +31,41 @@ public class ProductDAOMongo implements DAO<String, Product> {
     if (product == null)
       return null;
       
-      try {
+    try {
       Document document = UtilDAOMongo.toDocument(product);
       collection.insertOne(document);
       return product;
-      } catch (MongoException ex) {
-        throw new DAOException("Product creation error", ex);
-      }
-   }
+    } catch (MongoException ex) {
+      throw new DAOException("Product creation error", ex);
+    }
+  }
   
   @Override
-  public  Product read(String id) throws DAOException {
-    Document document = collection.find(eq("_id", new ObjectId(id))).first();
-
-    if (document != null) {
-      Product product = UtilDAOMongo.toProduct(document);
-      return product;
-    } else {
-      System.out.println("Coudn't find product with id: " + id);
+  public Product read(String id) throws DAOException {
+    try {
+      Document document = collection.find(eq("_id", Integer.parseInt(id))).first();
+      if (document != null) {
+        return UtilDAOMongo.toProduct(document);
+      }
+    } catch (MongoException ex) {
+      throw new DAOException("Error reading product", ex);
     }
-
     return null;
   }
 
   @Override
   public List<Product> readAll() throws DAOException {
     List<Product> products = new ArrayList<>();
-    FindIterable<Document> documents = collection.find();
-
-    for (Document document : documents) {
-      if (document != null) {
-        Product product = UtilDAOMongo.toProduct(document);
-      products.add(product);
+    try {
+      FindIterable<Document> documents = collection.find();
+      for (Document document : documents) {
+        if (document != null) {
+          Product product = UtilDAOMongo.toProduct(document);
+          products.add(product);
+        }
       }
+    } catch (MongoException ex) {
+      throw new DAOException("Error reading all products", ex);
     }
     return products;
   }
@@ -74,9 +76,9 @@ public class ProductDAOMongo implements DAO<String, Product> {
       return 0;
 
     try {
-    Bson query = eq("_id", product.getId());
-    UpdateResult result = collection.replaceOne(query, UtilDAOMongo.toDocument(product));
-    return (int) result.getModifiedCount();
+      Bson query = eq("_id", product.getId());
+      UpdateResult result = collection.replaceOne(query, UtilDAOMongo.toDocument(product));
+      return (int) result.getModifiedCount();
     } catch (MongoException ex) {
       throw new DAOException("Product update error.", ex);
     }
@@ -85,8 +87,8 @@ public class ProductDAOMongo implements DAO<String, Product> {
   @Override
   public int delete(String id) throws DAOException {
     try {
-    DeleteResult result = collection.deleteOne(Filters.eq("_id", new ObjectId(id)));
-    return (int) result.getDeletedCount();
+      DeleteResult result = collection.deleteOne(Filters.eq("_id", Integer.parseInt(id)));
+      return (int) result.getDeletedCount();
     } catch (MongoException ex) {
       throw new DAOException("Product delete error", ex);
     }

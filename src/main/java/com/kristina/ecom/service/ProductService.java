@@ -8,9 +8,11 @@ import com.kristina.ecom.dao.DAO;
 import com.kristina.ecom.dao.DAOException;
 import com.kristina.ecom.dao.DAOFactory;
 import com.kristina.ecom.domain.Product;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductService {
-  private DAO<Integer, Product> dao;
+  private DAO<String, Product> dao;
 
   public ProductService() {
     dao = DAOFactory.getInstance().create(DAO.Type.PRODUCT_DAO);
@@ -31,7 +33,6 @@ public class ProductService {
     return products;
   }
 
-  // this needs a fix, it shoudn't read from db
   public Product getComputer() {
     Product product = null;
     try {
@@ -48,7 +49,7 @@ public class ProductService {
   public Product get(int id) {
     Product product = null;
     try {
-      product = dao.read(id);
+      product = dao.read(String.valueOf(id));
     } catch (DAOException ex) {
       ex.printStackTrace();
     }
@@ -59,7 +60,7 @@ public class ProductService {
   public int delete(int id) {
     int rows = 0;
     try {
-      rows = dao.delete(id);
+      rows = dao.delete(String.valueOf(id));
     } catch (DAOException ex) {
       ex.printStackTrace();
     }
@@ -68,14 +69,15 @@ public class ProductService {
 
   public int create(Product product) {
     try {
-      dao.create(product);
+      Product createdProduct = dao.create(product);
+      return createdProduct != null ? 1 : 0;
     } catch (DAOException ex) {
       ex.printStackTrace();
+      return 0;
     }
-    return 1;
   }
 
-  public int update (Product product) {
+  public int update(Product product) {
     int rows = 0;
     try {
       rows = dao.update(product);
